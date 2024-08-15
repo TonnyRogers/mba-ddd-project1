@@ -35,6 +35,10 @@ export class Partner extends AggregateRoot {
     });
   }
 
+  changeName(name: string) {
+    this.name = name;
+  }
+
   initEvent(command: InitEventCommand) {
     return Event.create({
       ...command,
