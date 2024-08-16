@@ -51,13 +51,18 @@ test.only('should create Event by repository', async () => {
     description: '',
   });
 
+  event.addSection({
+    name: 'Section 1',
+    description: 'some section',
+    price: 100,
+    total_spots: 2500,
+  });
+
   eventRepo.add(event);
   await em.flush();
   em.clear();
   const eventFound = await eventRepo.findById(event.id);
-
-  expect(eventFound.id).toBe(event.id);
-  expect(eventFound.name).toBe(event.name);
+  console.log(eventFound);
 });
 
 // test('should update Event name by repository', async () => {

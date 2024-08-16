@@ -52,7 +52,7 @@ export const EventSchema = new EntitySchema<Event>({
       hidden: true,
       mapToPk: true,
       customType: new PartnerIdSchemaType(),
-      inherited: true,
+      inherited: true, // super classes
     },
   },
 });
