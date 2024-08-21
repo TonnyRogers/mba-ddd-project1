@@ -11,7 +11,7 @@ export type EventSpotConstructorProps = {
 };
 
 export class EventSpot extends Entity {
-  id: EventSpotId | string;
+  id: EventSpotId;
   location: string | null;
   is_published: boolean;
   is_reserved: boolean;
