@@ -10,6 +10,9 @@ import { EventSection } from '../../domain/entities/event-section.entity';
 import { EventSectionIdSchemaType } from './types/event-section-id.schema-type';
 import { EventSpot } from '../../domain/entities/event-spot.entity';
 import { EventSpotIdSchemaType } from './types/event-spot-id.schema-type';
+import { SpotReservation } from '../../domain/entities/spot-reservation.entity';
+import { Order, OrderStatus } from '../../domain/entities/order.entity';
+import { OrderIdSchemaType } from './types/order-id.schema-type';
 
 export const PartnerSchema = new EntitySchema<Partner>({
   class: Partner,
@@ -103,6 +106,57 @@ export const EventSpotSchema = new EntitySchema<EventSpot>({
       hidden: true,
       mapToPk: true,
       type: new EventSectionIdSchemaType(),
+    },
+  },
+});
+
+export const SpotReservationSchema = new EntitySchema<SpotReservation>({
+  class: SpotReservation,
+  properties: {
+    spot_id: {
+      customType: new EventSpotIdSchemaType(),
+      primary: true,
+      reference: 'm:1',
+      entity: () => EventSpot,
+      mapToPk: true,
+    },
+    reservation_date: { type: 'date' },
+    customer_id: {
+      reference: 'm:1',
+      entity: () => Customer,
+      mapToPk: true,
+      customType: new CustomerIdSchemaType(),
+      hidden: true,
+      inherited: true,
+    },
+  },
+});
+
+export const OrderSchema = new EntitySchema<Order>({
+  class: Order,
+  properties: {
+    id: {
+      customType: new OrderIdSchemaType(),
+      primary: true,
+    },
+    amount: { type: 'number' },
+    status: { enum: true, items: () => OrderStatus },
+    customer_id: {
+      reference: 'm:1',
+      entity: () => Customer,
+      mapToPk: true,
+      customType: new CustomerIdSchemaType(),
+      hidden: true,
+      inherited: true,
+    },
+    event_spot_id: {
+      reference: 'm:1',
+      entity: () => EventSpot,
+      customType: new EventSpotIdSchemaType(),
+      primary: true,
+      inherited: true,
+      hidden: true,
+      mapToPk: true,
     },
   },
 });
