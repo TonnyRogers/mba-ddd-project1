@@ -100,10 +100,24 @@ test('should create Order by service', async () => {
     unitOfWork,
   );
 
-  await orderService.create({
+  const op1 = orderService.create({
     event_id: event.id.value,
     section_id: event.sections[0].id.value,
     customer_id: customer.id.value,
     spot_id: event.sections[0].spots[0].id.value,
   });
+
+  const op2 = orderService.create({
+    event_id: event.id.value,
+    section_id: event.sections[0].id.value,
+    customer_id: customer.id.value,
+    spot_id: event.sections[0].spots[0].id.value,
+  });
+
+  try {
+    await Promise.all([op1, op2]);
+  } catch (error) {
+    console.log(error);
+    console.log(await orderRepo.findAll());
+  }
 });
