@@ -11,7 +11,7 @@ export class EventService {
     private uow: IUnitOfWork,
   ) {}
 
-  list() {
+  async findEvents() {
     return this.eventRepo.findAll();
   }
 

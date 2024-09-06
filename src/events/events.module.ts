@@ -36,6 +36,10 @@ import {
 } from 'src/utils/enums/providers';
 import { PartnersController } from './partners/partners.controller';
 import { CustomersController } from './customers/customers.controller';
+import { OrdersController } from './orders/orders.controller';
+import { EventsController } from './events/events.controller';
+import { EventSectionsController } from './events/event-section.controller';
+import { EventSpotsController } from './events/event-spot.controller';
 
 @Module({
   imports: [
@@ -129,6 +133,13 @@ import { CustomersController } from './customers/customers.controller';
       ],
     },
   ],
-  controllers: [PartnersController, CustomersController],
+  controllers: [
+    PartnersController,
+    CustomersController,
+    OrdersController,
+    EventsController,
+    EventSectionsController,
+    EventSpotsController,
+  ],
 })
 export class EventsModule {}
