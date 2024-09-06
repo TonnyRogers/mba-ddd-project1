@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/mysql';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { IUnitOfWork } from 'src/@core/common/application/unit-of-work.interface';
 import { CustomerService } from 'src/@core/events-domain/application/customer.service';
 import { EventService } from 'src/@core/events-domain/application/event.service';
@@ -40,6 +40,10 @@ import { OrdersController } from './orders/orders.controller';
 import { EventsController } from './events/events.controller';
 import { EventSectionsController } from './events/event-section.controller';
 import { EventSpotsController } from './events/event-spot.controller';
+import { ApplicationModule } from 'src/application/application.module';
+import { ApplicationService } from 'src/@core/common/application/application.service';
+import { DomainEventManager } from 'src/@core/common/domain/domain-event-manager';
+import { PartnerCreated } from 'src/@core/events-domain/domain/domain-events/partner-created.event';
 
 @Module({
   imports: [
@@ -52,6 +56,7 @@ import { EventSpotsController } from './events/event-spot.controller';
       OrderSchema,
       SpotReservationSchema,
     ]),
+    ApplicationModule,
   ],
   providers: [
     {
@@ -87,9 +92,9 @@ import { EventSpotsController } from './events/event-spot.controller';
     },
     {
       provide: PartnerService,
-      useFactory: (repo: IPartnerRepository, uow: IUnitOfWork) =>
-        new PartnerService(repo, uow),
-      inject: [PartnerProvider.REPOSITORY, UOWProvider.UOW],
+      useFactory: (repo: IPartnerRepository, appService: ApplicationService) =>
+        new PartnerService(repo, appService),
+      inject: [PartnerProvider.REPOSITORY, ApplicationService],
     },
     {
       provide: EventService,
@@ -142,4 +147,15 @@ import { EventSpotsController } from './events/event-spot.controller';
     EventSpotsController,
   ],
 })
-export class EventsModule {}
+export class EventsModule implements OnModuleInit {
+  constructor(private readonly domainEventManager: DomainEventManager) {}
+
+  onModuleInit() {
+    this.domainEventManager.register(
+      PartnerCreated.name,
+      (event: PartnerCreated) => {
+        console.log('PartnerCreated event received', event);
+      },
+    );
+  }
+}

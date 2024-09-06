@@ -1,8 +1,17 @@
 import { EntityManager } from '@mikro-orm/mysql';
 import { IUnitOfWork } from '../application/unit-of-work.interface';
+import { AggregateRoot } from '../domain/aggregate-root';
 
 export class UnitOfWorkMikroOrm implements IUnitOfWork {
   constructor(private em: EntityManager) {}
+
+  getAggregateRoots(): AggregateRoot[] {
+    return [
+      ...this.em.getUnitOfWork().getPersistStack(),
+      ...this.em.getUnitOfWork().getRemoveStack(),
+    ] as AggregateRoot[];
+  }
+
   runTransaction<T>(callback: () => Promise<T>): Promise<T> {
     return this.em.transactional(callback);
   }
