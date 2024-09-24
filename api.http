@@ -9,7 +9,7 @@ POST http://localhost:3000/partners
 Content-Type: application/json
 
 {
-    "name": "Partner 4"
+    "name": "Partner 5"
 }
 
 ###
@@ -23,8 +23,8 @@ POST http://localhost:3000/customers
 Content-Type: application/json
 
 {
-    "name": "Customer 1",
-    "cpf": "592.110.870-74"
+    "name": "Customer 4",
+    "cpf": "252.724.330-41"
 }
 
 ###
