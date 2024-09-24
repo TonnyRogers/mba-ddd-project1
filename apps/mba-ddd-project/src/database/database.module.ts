@@ -12,6 +12,7 @@ import {
   SpotReservationSchema,
 } from '../@core/events-domain/infra/db/schemas';
 import { UOWProvider } from '../utils/enums/providers';
+import { StoredEventSchema } from '../@core/stored-events/infra/db/schemas';
 
 @Global()
 @Module({
@@ -25,6 +26,7 @@ import { UOWProvider } from '../utils/enums/providers';
         EventSpotSchema,
         OrderSchema,
         SpotReservationSchema,
+        StoredEventSchema,
       ],
       dbName: 'events',
       host: 'localhost',

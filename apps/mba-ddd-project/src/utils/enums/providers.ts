@@ -30,3 +30,7 @@ export enum SpotReservationProvider {
 export enum QueueNameProviders {
   INTEGRATION_EVENTS = 'integration-events',
 }
+
+export enum StoredEventProviders {
+  REPOSITORY = 'STORED_EVENT_REPOSITORY',
+}
